@@ -25,9 +25,14 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
+// ДОБАВЛЕНЫ ИМПОРТЫ ДЛЯ ВАШЕГО СПИСКА ПРИЛОЖЕНИЙ:
+import io.mmaltsev.vkeducation.data.apps.AppsRepositoryImpl
+import io.mmaltsev.vkeducation.domain.apps.AppsRepository
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
@@ -39,17 +44,18 @@ object AppModule {
             .build()
     }
 
+    // ИСПРАВЛЕНО: @Binds заменен на @Provides, так как класс object
+    @Provides
+    @Singleton
+    fun provideAppsRepository(): AppsRepository {
+        return AppsRepositoryImpl()
+    }
+
     @Provides
     @Singleton
     fun provideAppApi(retrofit: Retrofit): AppApi {
         return retrofit.create(AppApi::class.java)
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideAppDetailsRepository(appApi: AppApi): AppDetailsRepository {
-//        return AppDetailsRepositoryImpl(appApi)
-//    }
 
     @Provides
     @Singleton

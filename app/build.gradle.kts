@@ -33,7 +33,7 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility =  JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 //    compileOptions {
 //        sourceCompatibility = JavaVersion.VERSION_11
@@ -49,9 +49,13 @@ android {
     hilt {
         enableAggregatingTask = false
     }
+}
 
-    kapt {
-        arguments {arg("room.schemaLocation", "$projectDir/schemas")}
+// Блок kapt вынесен из android {} на верхний уровень — это правильное расположение
+kapt {
+    correctErrorTypes = true // Исправляет ошибку NonExistentClass в Hilt
+    arguments {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
 }
 
@@ -85,7 +89,8 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
+    // ИСПРАВЛЕНО: версии Room теперь совпадают
     implementation("androidx.room:room-runtime:2.8.3")
-    kapt("androidx.room:room-compiler:2.5.0")
+    kapt("androidx.room:room-compiler:2.8.3")
     implementation("androidx.room:room-ktx:2.8.3")
 }
